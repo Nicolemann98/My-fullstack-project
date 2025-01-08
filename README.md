@@ -140,7 +140,7 @@ The only pages that fail the validations are the ones using the Django forms (wh
 
 This project was deployed onto Heroku, the link for which is: https://nicole-full-stack-project-7589e5b487d3.herokuapp.com/
 
-Automatic deployments are enabled through Heroku. To deploy, simply git commit and push to the main branch. If however you want to host it yourself follow the following instructions. Note that I am assuming that you have a GitHub account, git bash installed with it linked to your GitHub account, and Heroku installed with it linked to your GitHub account. If that is not the case, do that now. If you do not have the links to your GitHub account, you can follow the steps and link accounts when prompted by git bash and Heroku.
+Automatic deployments are enabled through Heroku. To deploy, simply git commit and push to the main branch. If however you want to host it yourself follow the following instructions. Note that I am assuming that you have a GitHub account, git bash installed with it linked to your GitHub account, a Heroku account with linked to your GitHub account. If that is not the case, do that now. If you do not have the links to your GitHub account, you can follow the steps and link accounts when prompted by git bash and Heroku.
 
 First start by cloning this repository into your local GitHub account using the following steps. [See the GitHub documentation](https://docs.github.com/en/repositories/creating-and-managing-repositories/duplicating-a-repository)), my steps are a copy provided in that documentation, with a few minor tweaks to make them specific to this repo.
 
@@ -165,7 +165,54 @@ First start by cloning this repository into your local GitHub account using the 
 Now you should have a version of this repository within your GitHub account.
 ![image](https://github.com/user-attachments/assets/aed83c1b-b9f0-495e-8381-1fbe586b64e3)
 
-Next, deploy to Heroku. If you were creating a Heroku app from scratch, there would normally be more stages to install required dependencies including CLIs and other requirements, however because you have made a direct clone of this repo (including [requirements.txt](requirements.txt) and [Procfile](Procfile)) all of that has already been done by me and does not need to be done again. Use the following steps to deploy your clone to Heroku (note that Heroku may change their deployment process leading these steps to be out of date).
+If you are going to use this for more than testing purposes, I would recommend finding a database hosting service that you like. For this I originally used ElephantSQL.com which is now discontinued, however there are many more options online and I will give steps to set up SQLite with this project. In both cases, follow the steps below.
+
+1. Clone your repository (not this one, but the dupicate that you created previously) locally. I used gitpod for this, by linking my GitHub account there was no need for any commands, just choosing the correct repo. However you can use your favourite IDE along with git if you'd prefer.
+2. Install all the dependencies, I have frozen them in [requirements.txt](requirements.txt) so just run
+   ```
+   pip3 install requirements.txt
+   ```
+3. If you are using your own database hosting service skip to step 7.
+4. Open [settings.py](settings.py)
+5. Change the line with SECRET_KEY on to
+   ```
+   SECRET_KEY = os.environ.get("SECRET_KEY")
+   ```
+6. Find the databases section of settings, add and remove the comments to make it equal to this
+   ```
+   DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+   }
+   
+   # DATABASES = {
+   #     'default': dj_database_url.parse(os.environ.get("DATABASE_URL"))
+   # }
+   
+   if 'test' in sys.argv:
+       DATABASES['default']['ENGINE'] = 'django.db.backends.sqlite3'
+   
+   # del DATABASES['default']['OPTIONS']['sslmode']
+   ```
+7. If you are hosting your own database resume here
+8. Create a superuser for the application, ensuring to choose a sensible username and password that you will remember for this user
+   ```
+   python manage.py createsuperuser
+   ```
+9. Push these changes to GitHub
+   ```
+   git add .
+   git commit -m "Change database setup to use SQLite"
+   git push
+   ```
+10. Migrate the database - note this does not transfer any data, only the metadata about tables, fields etc
+   ```
+   python3 manage.py migrate
+   ```
+
+Finally, it is time to deploy to Heroku. Use the following steps to deploy your clone to Heroku (note that Heroku may change their deployment process leading these steps to be out of date). There are other ways to do this using the Heroku CLI, if you are more comfortable with that, then feel free, however I will rely on the web application as much as possible for ease.
 
 1. Go to https://dashboard.heroku.com/
 2. Click `New` then `Create new app`
@@ -175,13 +222,15 @@ Next, deploy to Heroku. If you were creating a Heroku app from scratch, there wo
    ![image](https://github.com/user-attachments/assets/16f70636-7bc5-41ab-ba8c-03435cbd88a6)
 5. The repository clone should appear, click `connect`.  You should be redirected to the deployment page.
 6. Go to the settings page, click `Reveal Config Vars`, and add a new one with the key as `DISABLE_COLLECTSTATIC` and value as `1`.
-
-7. 
-8. You should be redirected to the deployment page, scroll down, depending on whether you want a single deployment or auto deployments either click `Deploy Branch` or `Enable Automatic Deploys`
+7. Connect the database, if you are hosting your own, follow step (i), otherwise if you followed my steps to use SQLite, follow step (ii)
+    1. Find the database URL within your host and add a new config var `DATABASE_URL` that has the URL as it's value. Also if there are any other steps in your chosen host's documentation, then follow them too.
+    2. Go to https://djecrety.ir/ to create a django secret key, copy it and create a new config var `SECRET_KEY` and paste your new secret key as the value
+8. Go to the deployment page, scroll down, depending on whether you want a single deployment or auto deployments either click `Deploy Branch` or `Enable Automatic Deploys`
    ![image](https://github.com/user-attachments/assets/b3697a0f-423f-443f-a17a-b04b4f104559)
+9. Once it has finished running, at the top, click `Open app`
+   ![image](https://github.com/user-attachments/assets/ffc00331-2574-42bc-9bec-34a0d4b93adb)
 
-
-
+Once you have done all of that, you should be directedd to the page where you have hosted this project. Note that none of the data from this project will be transferred over as you will be using your own database so it will be a blank slate. The only registered user will be the admin one created within the database steps.
 
 ## Credits 
 
