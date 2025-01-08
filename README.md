@@ -140,7 +140,9 @@ The only pages that fail the validations are the ones using the Django forms (wh
 
 This project was deployed onto Heroku, the link for which is: https://nicole-full-stack-project-7589e5b487d3.herokuapp.com/
 
-Automatic deployments are enabled through Heroku. To deploy, simply git commit and push to the main branch. If however you want to host it yourself follow the following instructions. Note that I am assuming that you have a GitHub account, git bash installed with it linked to your GitHub account, a Heroku account with linked to your GitHub account. If that is not the case, do that now. If you do not have the links to your GitHub account, you can follow the steps and link accounts when prompted by git bash and Heroku.
+Automatic deployments are enabled through Heroku. To deploy, simply git commit and push to the main branch. If however you want to host it yourself follow the following instructions. Note that I am assuming that you have a GitHub account, git bash installed with it linked to your GitHub account, and a Heroku account with linked to your GitHub account. If that is not the case, do that now. If you do not have the links to your GitHub account, you can follow these steps and link accounts when prompted by git bash and Heroku.
+
+### Cloning repository to local GitHub account
 
 First start by cloning this repository into your local GitHub account using the following steps. [See the GitHub documentation](https://docs.github.com/en/repositories/creating-and-managing-repositories/duplicating-a-repository)), my steps are a copy provided in that documentation, with a few minor tweaks to make them specific to this repo.
 
@@ -164,6 +166,8 @@ First start by cloning this repository into your local GitHub account using the 
 
 Now you should have a version of this repository within your GitHub account.
 ![image](https://github.com/user-attachments/assets/aed83c1b-b9f0-495e-8381-1fbe586b64e3)
+
+### Setting up database
 
 If you are going to use this for more than testing purposes, I would recommend finding a database hosting service that you like. For this I originally used ElephantSQL.com which is now discontinued, however there are many more options online and I will give steps to set up SQLite with this project. In both cases, follow the steps below.
 
@@ -201,16 +205,18 @@ If you are going to use this for more than testing purposes, I would recommend f
    ```
    python manage.py createsuperuser
    ```
-9. Push these changes to GitHub
-   ```
-   git add .
-   git commit -m "Change database setup to use SQLite"
-   git push
-   ```
-10. Migrate the database - note this does not transfer any data, only the metadata about tables, fields etc
+9. Migrate the database - note this does not transfer any data, only the metadata about tables, fields etc
    ```
    python3 manage.py migrate
    ```
+10. Push these changes to GitHub
+    ```
+    git add .
+    git commit -m "Change database setup to use SQLite"
+    git push
+    ```
+
+### Deploying to Heroku
 
 Finally, it is time to deploy to Heroku. Use the following steps to deploy your clone to Heroku (note that Heroku may change their deployment process leading these steps to be out of date). There are other ways to do this using the Heroku CLI, if you are more comfortable with that, then feel free, however I will rely on the web application as much as possible for ease.
 
@@ -230,7 +236,7 @@ Finally, it is time to deploy to Heroku. Use the following steps to deploy your 
 9. Once it has finished running, at the top, click `Open app`
    ![image](https://github.com/user-attachments/assets/ffc00331-2574-42bc-9bec-34a0d4b93adb)
 
-Once you have done all of that, you should be directedd to the page where you have hosted this project. Note that none of the data from this project will be transferred over as you will be using your own database so it will be a blank slate. The only registered user will be the admin one created within the database steps.
+Once you have done all of that, you should be directed to the page where you have hosted this project. Note that none of the data from this project will be transferred over as you will be using your own database so it will be a blank slate. The only registered user will be the admin one created within the database steps.
 
 ## Credits 
 
