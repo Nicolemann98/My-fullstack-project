@@ -140,7 +140,7 @@ The only pages that fail the validations are the ones using the Django forms (wh
 
 This project was deployed onto Heroku, the link for which is: https://nicole-full-stack-project-7589e5b487d3.herokuapp.com/
 
-Automatic deployments are enabled through Heroku. To deploy, simply git commit and push to the main branch. If however you want to host it yourself follow the following instructions. Note that I am assuming that you have a Heroku account, a GitHub account, and git bash installed with it linked to your GitHub account. If that is not the case, do that now.
+Automatic deployments are enabled through Heroku. To deploy, simply git commit and push to the main branch. If however you want to host it yourself follow the following instructions. Note that I am assuming that you have a GitHub account, git bash installed with it linked to your GitHub account, and Heroku installed with it linked to your GitHub account. If that is not the case, do that now. If you do not have the links to your GitHub account, you can follow the steps and link accounts when prompted by git bash and Heroku.
 
 First start by cloning this repository into your local GitHub account using the following steps. [See the GitHub documentation](https://docs.github.com/en/repositories/creating-and-managing-repositories/duplicating-a-repository)), my steps are a copy provided in that documentation, with a few minor tweaks to make them specific to this repo.
 
@@ -150,16 +150,38 @@ First start by cloning this repository into your local GitHub account using the 
    git clone --bare https://github.com/Nicolemann98/My-fullstack-project.git
    ```
 4. Open your GitHub account and create a new, blank repository, this should provide a link to use in the next step
+   ![image](https://github.com/user-attachments/assets/19f3d414-35c3-47ef-92a3-1851ae43f560)
 5. Mirror-push your clone to the newly created repository, replacing the link with the link copied in the previous step
    ```
    cd My-fullstack-project.git
    git push --mirror https://github.com/EXAMPLE-USER/NEW-REPOSITORY.git
    ```
 6. Remove the temporary local repository you created earlier
+   ```
+   cd ..
+   rm -rf My-fullstack-project.git/
+   ```
 
-Now you should have a version of this repository within your GitHub account. Next, deploy to Heroku.
+Now you should have a version of this repository within your GitHub account.
+![image](https://github.com/user-attachments/assets/aed83c1b-b9f0-495e-8381-1fbe586b64e3)
 
-// TODO: Heroku deployment
+Next, deploy to Heroku. If you were creating a Heroku app from scratch, there would normally be more stages to install required dependencies including CLIs and other requirements, however because you have made a direct clone of this repo (including [requirements.txt](requirements.txt) and [Procfile](Procfile)) all of that has already been done by me and does not need to be done again. Use the following steps to deploy your clone to Heroku (note that Heroku may change their deployment process leading these steps to be out of date).
+
+1. Go to https://dashboard.heroku.com/
+2. Click `New` then `Create new app`
+3. Name your application, select the applicable region, and click `Create app`
+   ![image](https://github.com/user-attachments/assets/24ff3524-bad4-404a-94eb-1e09ec7cd6f0)
+4. Under `Deployment Method` select GitHub, enter the cloned repository's GitHub account and location below and press search
+   ![image](https://github.com/user-attachments/assets/16f70636-7bc5-41ab-ba8c-03435cbd88a6)
+5. The repository clone should appear, click `connect`.  You should be redirected to the deployment page.
+6. Go to the settings page, click `Reveal Config Vars`, and add a new one with the key as `DISABLE_COLLECTSTATIC` and value as `1`.
+
+7. 
+8. You should be redirected to the deployment page, scroll down, depending on whether you want a single deployment or auto deployments either click `Deploy Branch` or `Enable Automatic Deploys`
+   ![image](https://github.com/user-attachments/assets/b3697a0f-423f-443f-a17a-b04b4f104559)
+
+
+
 
 ## Credits 
 
